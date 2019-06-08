@@ -10,18 +10,20 @@ import Alamofire
 import Foundation
 
 extension Alamofire.DataRequest {
+    
     private static func BinanceRequestResponseSerializer<T: Decodable>(_ keyPath: String?, _ decoder: JSONDecoder) -> DataResponseSerializer<T> {
         return DataResponseSerializer {
             (request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) -> Result<T> in
-
-            if let error = error {
-                return .failure(error)
+            
+            guard error != nil else {
+                return .failure(error!)
             }
 
             if let keyPath = keyPath {
                 if keyPath.isEmpty {
                     return .failure(BinanceApiError.emptyKeyPath)
                 }
+                
                 return DataRequest.decodeToObject(T.self, decoder: decoder, response: response, data: data)
             }
 

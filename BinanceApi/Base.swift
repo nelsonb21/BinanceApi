@@ -10,6 +10,7 @@ import Alamofire
 import CommonCrypto
 
 extension Data {
+    
     func hmac(base64key key: String) -> String {
         let algorithm = CCHmacAlgorithm(kCCHmacAlgSHA256)
         let keyLength = key.lengthOfBytes(using: .utf8)
@@ -29,10 +30,11 @@ extension Data {
 }
 
 extension String {
+    
     func hmac(base64key key: String) -> String {
         let algorithm = CCHmacAlgorithm(kCCHmacAlgSHA256)
         let keyLength = key.lengthOfBytes(using: .utf8)
-        let messageLength = self.lengthOfBytes(using: .utf8)
+        let messageLength = lengthOfBytes(using: .utf8)
         let digestLength = Int(CC_SHA256_DIGEST_LENGTH)
 
         var output = [UInt8](repeating: 0, count: digestLength)
@@ -102,6 +104,7 @@ public struct BinanceApi {
 
     public init(apiKey: String?, secretKey: String?, receiveWindow: TimeInterval? = nil) {
         self.session = BinanceApi.defaultSessionManager
+        
         if let apiKey = apiKey, let secretKey = secretKey {
             self.session.adapter = BinanceRequestAdapter(
                 apiKey: apiKey,
